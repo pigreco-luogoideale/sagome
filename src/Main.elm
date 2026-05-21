@@ -35,7 +35,7 @@ loadPuzzle idx =
         solution =
             puzzles
                 |> List.Extra.getAt idx
-                |> Maybe.withDefault []
+                |> Maybe.withDefault ( -1, [] )
     in
     { puzzleIdx = idx
     , solution = solution
@@ -84,11 +84,21 @@ update msg model =
 
 isSolved : Model -> Bool
 isSolved model =
-    model.selected == model.solution
+    let
+        ( _, solution ) =
+            model.solution
+    in
+    model.selected == solution
 
 
 view : Model -> Browser.Document Msg
 view model =
+    let
+        currentLayers =
+            allLayers
+                |> List.Extra.getAt (Tuple.first model.solution)
+                |> Maybe.withDefault []
+    in
     { title = "Che sagoma la geometria!"
     , body =
         [ div [ class "min-h-screen bg-gray-950 text-white flex flex-col items-center p-4 font-sans" ]
@@ -97,7 +107,7 @@ view model =
             , div [ class "w-full max-w-2xl flex flex-col gap-4" ]
                 [ -- Target + Composite panels
                   div [ class "grid grid-cols-2 gap-4 h-56" ]
-                    [ imagePanel "Target" model.solution False
+                    [ imagePanel "Target" (Tuple.second model.solution) False
                     , imagePanel
                         (if isSolved model then
                             "Composite ✓"
@@ -111,7 +121,7 @@ view model =
 
                 -- Layer grid
                 , div [ class "grid grid-cols-4 gap-2" ]
-                    (List.map (layerThumb model.selected) allLayers)
+                    (List.map (layerThumb model.selected) currentLayers)
 
                 -- Reset button
                 , button

@@ -1,7 +1,7 @@
 {
   pkgs,
-  lib,
   inputs,
+  config,
   ...
 }: {
   overlays = [
@@ -10,11 +10,6 @@
 
   # https://devenv.sh/languages/
   languages.elm.enable = true;
-
-  scripts.do-build.exec = ''
-    elm make src/Main.elm --output=dist/game.js
-    cp -r layers dist/
-  '';
 
   outputs = {
     game = pkgs.mkElmDerivation {
@@ -25,7 +20,7 @@
       buildPhase = ''
         runHook preBuild
 
-        elm make src/Main.elm --output=dist/game.js
+        elm make src/Main.elm --output=static/game.js
 
         runHook postBuild
       '';
@@ -34,12 +29,16 @@
         runHook preInstall
 
         mkdir -p $out
-        cp dist/index.html $out/
-        cp dist/game.js $out/
-        cp -r layers $out/
+        cp static/index.html $out/
+        cp static/game.js $out/
+        cp -r static/layers $out/
 
         runHook postInstall
       '';
     };
   };
+
+  processes.server.exec = ''
+    python3 -m http.server -d ${config.outputs.game}
+  '';
 }

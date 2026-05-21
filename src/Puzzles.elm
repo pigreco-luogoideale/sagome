@@ -2,20 +2,28 @@ module Puzzles exposing (Puzzle, allLayers, puzzles)
 
 -- PUZZLES
 -- Each puzzle is a list of layer IDs in bottom-to-top stacking order.
+-- There's an index associated that represents the layers to use for that puzzle.
 
 
 type alias Puzzle =
-    List String
+    ( Int, List String )
 
 
 puzzles : List Puzzle
 puzzles =
-    [ [ "001", "002", "003" ]
-    , [ "002", "004" ]
-    , [ "001", "003", "005" ]
+    [ -- Disegno 1
+      ( 0, [ "108", "105", "110", "107", "109" ] )
+    , -- Disegno 2
+      ( 0, [ "104", "106", "105", "107", "110" ] )
+    , -- Disegno 3
+      ( 1, [ "207", "208", "204", "201" ] )
+    , -- Disegno 4
+      ( 1, [ "203", "210", "212", "211", "205" ] )
     ]
 
 
-allLayers : List String
+allLayers : List (List String)
 allLayers =
-    [ "001", "002", "003", "004", "005" ]
+    [ List.range 101 112 |> List.map String.fromInt
+    , List.range 201 212 |> List.map String.fromInt
+    ]
