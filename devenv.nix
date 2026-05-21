@@ -5,6 +5,9 @@
   inputs,
   ...
 }: {
+  overlays = [
+    (inputs.mkElmDerivation.overlays.mkElmDerivation)
+  ];
   # https://devenv.sh/basics/
   env.GREET = "devenv";
 
@@ -37,6 +40,7 @@
 
   # https://devenv.sh/languages/
   languages.rust.enable = true;
+  languages.elm.enable = true;
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
@@ -66,6 +70,33 @@
     echo "Running tests"
     git --version | grep --color=auto "${pkgs.git.version}"
   '';
+
+  outputs = {
+    game = pkgs.mkElmDerivation {
+      name = "stencillogici";
+      src = ./.;
+
+      nativeBuildInputs = [pkgs.elmPackages.elm];
+      buildPhase = ''
+        runHook preBuild
+
+        elm make src/Main.elm --output=game.js
+
+        runHook postBuild
+      '';
+
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out
+        cp index.html $out/
+        cp game.js $out/
+        cp -r layers $out/
+
+        runHook postInstall
+      '';
+    };
+  };
 
   # https://devenv.sh/git-hooks/
   # git-hooks.hooks.shellcheck.enable = true;

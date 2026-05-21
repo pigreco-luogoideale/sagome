@@ -120,6 +120,9 @@ export component AppWindow inherits Window {
 
     property <bool> landscape: self.width > self.height;
 
+    // Hidden text to preload the emoji font at startup
+    Text { text: "🎉"; color: transparent; font-size: 1px; }
+
     // Win overlay
     if solved: Rectangle {
         z: 100;
