@@ -11,6 +11,11 @@
   # https://devenv.sh/languages/
   languages.elm.enable = true;
 
+  scripts.do-build.exec = ''
+    elm make src/Main.elm --output=dist/game.js
+    cp -r layers dist/
+  '';
+
   outputs = {
     game = pkgs.mkElmDerivation {
       name = "stencillogici";
@@ -20,7 +25,7 @@
       buildPhase = ''
         runHook preBuild
 
-        elm make src/Main.elm --output=game.js
+        elm make src/Main.elm --output=dist/game.js
 
         runHook postBuild
       '';
@@ -29,8 +34,8 @@
         runHook preInstall
 
         mkdir -p $out
-        cp index.html $out/
-        cp game.js $out/
+        cp dist/index.html $out/
+        cp dist/game.js $out/
         cp -r layers $out/
 
         runHook postInstall

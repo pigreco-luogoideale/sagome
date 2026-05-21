@@ -1,4 +1,4 @@
-module Puzzles exposing (puzzles)
+module Puzzles exposing (Puzzle, allLayers, puzzles)
 
 -- PUZZLES
 -- Each puzzle is a list of layer IDs in bottom-to-top stacking order.
@@ -14,3 +14,8 @@ puzzles =
     , [ "002", "004" ]
     , [ "001", "003", "005" ]
     ]
+
+
+allLayers : List String
+allLayers =
+    [ "001", "002", "003", "004", "005" ]

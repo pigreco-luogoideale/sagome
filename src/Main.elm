@@ -5,11 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import List.Extra
-
-
-allLayers : List String
-allLayers =
-    [ "001", "002", "003", "004", "005" ]
+import Puzzles exposing (..)
 
 
 layerPath : String -> String
@@ -93,11 +89,11 @@ isSolved model =
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "Stencillogici"
+    { title = "Che sagoma la geometria!"
     , body =
         [ div [ class "min-h-screen bg-gray-950 text-white flex flex-col items-center p-4 font-sans" ]
             [ h1 [ class "text-2xl font-bold mb-4 tracking-wide text-yellow-400" ]
-                [ text "Stencillogici" ]
+                [ text "Che sagoma la geometria!" ]
             , div [ class "w-full max-w-2xl flex flex-col gap-4" ]
                 [ -- Target + Composite panels
                   div [ class "grid grid-cols-2 gap-4 h-56" ]
