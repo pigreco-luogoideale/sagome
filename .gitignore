@@ -10,7 +10,7 @@ devenv.local.yaml
 .pre-commit-config.yaml
 
 # elm output
-game.js
+static/game.js
 
 elm-stuff
 memory

@@ -129,14 +129,14 @@ view model =
                     , onClick Reset
                     ]
                     [ text "⟳ Reset" ]
+
+                -- Next puzzle when solved
+                , if isSolved model then
+                    winOverlay
+
+                  else
+                    text ""
                 ]
-
-            -- Win overlay
-            , if isSolved model then
-                winOverlay
-
-              else
-                text ""
             ]
         ]
     }
@@ -217,7 +217,8 @@ layerThumb selected id =
 
 winOverlay : Html Msg
 winOverlay =
-    div [ class "fixed inset-0 bg-black/70 flex flex-col items-center justify-center gap-8 z-50" ]
+    -- div [ class "fixed inset-0 bg-black/70 flex flex-col items-center justify-center gap-8 z-50" ]
+    div []
         [ p [ class "text-6xl font-bold text-yellow-400 drop-shadow-lg" ] [ text "🎉 Solved!" ]
         , div [ class "flex gap-4" ]
             [ button

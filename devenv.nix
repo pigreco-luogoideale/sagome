@@ -11,6 +11,10 @@
   # https://devenv.sh/languages/
   languages.elm.enable = true;
 
+  packages = [
+    pkgs.elmPackages.elm-live
+  ];
+
   outputs = {
     game = pkgs.mkElmDerivation {
       name = "stencillogici";
@@ -39,6 +43,6 @@
   };
 
   processes.server.exec = ''
-    python3 -m http.server -d ${config.outputs.game}
+    elm-live src/Main.elm --dir=./static --start-page=index.html -- --output=./static/game.js
   '';
 }
