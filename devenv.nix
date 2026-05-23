@@ -17,7 +17,7 @@
 
   outputs = {
     game = pkgs.mkElmDerivation {
-      name = "stencillogici";
+      name = "sagome";
       src = ./.;
 
       nativeBuildInputs = [pkgs.elmPackages.elm];
