@@ -1,14 +1,12 @@
 {
   pkgs,
   inputs,
-  config,
   ...
 }: {
   overlays = [
     (inputs.mkElmDerivation.overlays.mkElmDerivation)
   ];
 
-  # https://devenv.sh/languages/
   languages.elm.enable = true;
 
   packages = [

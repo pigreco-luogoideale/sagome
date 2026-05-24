@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
     devenv.url = "github:cachix/devenv";
-    mkElmDerivation.url = "github:jeslie0/mkElmDerivation";
   };
 
   outputs = {
