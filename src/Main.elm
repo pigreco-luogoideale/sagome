@@ -50,6 +50,7 @@ loadPuzzle idx =
 type Msg
     = ToggleLayer String
     | Reset
+    | PrevLevel
     | NextLevel
 
 
@@ -69,6 +70,13 @@ update msg model =
 
         Reset ->
             ( { model | selected = [] }, Cmd.none )
+
+        PrevLevel ->
+            let
+                prevIdx =
+                    modBy (List.length puzzles) (model.puzzleIdx - 1)
+            in
+            ( loadPuzzle prevIdx, Cmd.none )
 
         NextLevel ->
             let
@@ -123,12 +131,24 @@ view model =
                 , div [ class "grid grid-cols-4 gap-2" ]
                     (List.map (layerThumb model.selected) currentLayers)
 
-                -- Reset button
-                , button
-                    [ class "w-full py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
-                    , onClick Reset
+                -- Navigation + Reset buttons
+                , div [ class "grid grid-cols-3 gap-2" ]
+                    [ button
+                        [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
+                        , onClick PrevLevel
+                        ]
+                        [ text "◀ Prev Level" ]
+                    , button
+                        [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
+                        , onClick Reset
+                        ]
+                        [ text "⟳ Reset" ]
+                    , button
+                        [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
+                        , onClick NextLevel
+                        ]
+                        [ text "Next Level ▶" ]
                     ]
-                    [ text "⟳ Reset" ]
 
                 -- Next puzzle when solved
                 , if isSolved model then
@@ -217,22 +237,8 @@ layerThumb selected id =
 
 winOverlay : Html Msg
 winOverlay =
-    -- div [ class "fixed inset-0 bg-black/70 flex flex-col items-center justify-center gap-8 z-50" ]
-    div []
-        [ p [ class "text-6xl font-bold text-yellow-400 drop-shadow-lg" ] [ text "🎉 Solved!" ]
-        , div [ class "flex gap-4" ]
-            [ button
-                [ class "px-6 py-3 rounded-xl bg-gray-700 hover:bg-gray-600 text-white font-semibold text-lg transition"
-                , onClick Reset
-                ]
-                [ text "Play Again" ]
-            , button
-                [ class "px-6 py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-lg transition"
-                , onClick NextLevel
-                ]
-                [ text "Next Level" ]
-            ]
-        ]
+    div [ class "flex justify-center" ]
+        [ p [ class "text-6xl font-bold text-yellow-400 drop-shadow-lg" ] [ text "🎉 Solved!" ] ]
 
 
 
