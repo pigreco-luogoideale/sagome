@@ -111,22 +111,22 @@ view model =
     { title = it.title
     , body =
         [ div [ class "min-h-screen bg-gray-950 text-white flex flex-col items-center p-4 font-sans" ]
-            [ h1 [ class "text-2xl font-bold mb-4 tracking-wide text-yellow-400" ]
+            [ h1 [ class "text-2xl font-bold mb-1 tracking-wide text-yellow-400" ]
                 [ text it.title ]
+            , a
+                [ href "https://www.luogoideale.org"
+                , Html.Attributes.target "_blank"
+                , rel "noopener noreferrer"
+                , class "text-sm font-semibold animated-gradient-text transition mb-4"
+                ]
+                [ text it.backToSite ]
             , div [ class "w-full max-w-2xl flex flex-col gap-4" ]
                 [ -- Target + Composite panels
                   div
                     [ class
-                        ("grid grid-cols-2 gap-4 h-56 rounded-xl transition "
-                            ++ (if isSolved model then
-                                    "ring-4 ring-green-500 p-2"
-
-                                else
-                                    ""
-                               )
-                        )
+                        "grid grid-cols-2 gap-4 h-56 rounded-xl transition"
                     ]
-                    [ imagePanel it.target (Tuple.second model.solution) False
+                    [ imagePanel it.target (Tuple.second model.solution) (isSolved model)
                     , imagePanel
                         (if isSolved model then
                             it.compositeSolved
@@ -185,10 +185,17 @@ imagePanel label layers highlighted =
 
             else
                 "text-gray-400"
+
+        bgColor =
+            if highlighted then
+                "bg-green-950"
+
+            else
+                "bg-gray-900"
     in
-    div [ class ("relative rounded-lg border-2 bg-gray-900 overflow-hidden flex flex-col " ++ borderColor) ]
+    div [ class ("relative rounded-lg border-2 overflow-hidden flex flex-col " ++ borderColor ++ " " ++ bgColor) ]
         [ span [ class ("text-xs text-center py-1 " ++ labelColor) ] [ text label ]
-        , div [ class "relative flex-1" ]
+        , div [ class "relative flex-1 mb-2" ]
             (List.map
                 (\id ->
                     img
@@ -244,7 +251,7 @@ layerThumb selected id =
 
 winOverlay : Bool -> Html Msg
 winOverlay solved =
-    div [ class "flex justify-center" ]
+    div [ class "-my-3 flex justify-center" ]
         [ p [ class "text-lg font-bold text-green-400" ]
             [ text
                 (if solved then

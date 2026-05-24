@@ -10,6 +10,7 @@ and switch on it where `it` is currently used in `Main`.
 
 type alias Strings =
     { title : String
+    , backToSite : String
     , target : String
     , composite : String
     , compositeSolved : String
@@ -24,7 +25,8 @@ type alias Strings =
 -}
 it : Strings
 it =
-    { title = "Che sagoma la geometria!"
+    { title = "📐 Che sagoma la geometria! 💠"
+    , backToSite = "← Torna al sito di PiGreco"
     , target = "Modello"
     , composite = "Composizione"
     , compositeSolved = "Composizione ✓"

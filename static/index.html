@@ -5,6 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stencillogici</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes gradient-shift {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 200% 50%;
+        }
+      }
+      @keyframes glow-pulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 2px rgba(192, 38, 211, 0.4));
+        }
+        50% {
+          filter: drop-shadow(0 0 7px rgba(217, 70, 239, 0.85));
+        }
+      }
+      .animated-gradient-text {
+        background-image: linear-gradient(
+          90deg,
+          #6b21a8,
+          #c026d3,
+          #fbcfe8,
+          #c026d3,
+          #a21caf,
+          #c026d3,
+          #fbcfe8,
+          #c026d3,
+          #6b21a8
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation:
+          gradient-shift 2.5s linear infinite,
+          glow-pulse 2s ease-in-out infinite;
+      }
+      .animated-gradient-text:hover {
+        background-image: linear-gradient(
+          90deg,
+          #d946ef,
+          #ec4899,
+          #fdf4ff,
+          #f0abfc,
+          #d946ef,
+          #f472b6,
+          #fdf4ff,
+          #e879f9,
+          #d946ef
+        );
+        animation:
+          gradient-shift 1s linear infinite,
+          glow-pulse 0.9s ease-in-out infinite;
+      }
+    </style>
     <script src="game.js"></script>
   </head>
   <body class="bg-gray-950">
