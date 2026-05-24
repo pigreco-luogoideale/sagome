@@ -114,7 +114,17 @@ view model =
                 [ text "Che sagoma la geometria!" ]
             , div [ class "w-full max-w-2xl flex flex-col gap-4" ]
                 [ -- Target + Composite panels
-                  div [ class "grid grid-cols-2 gap-4 h-56" ]
+                  div
+                    [ class
+                        ("grid grid-cols-2 gap-4 h-56 rounded-xl transition "
+                            ++ (if isSolved model then
+                                    "ring-4 ring-green-500 p-2"
+
+                                else
+                                    ""
+                               )
+                        )
+                    ]
                     [ imagePanel "Target" (Tuple.second model.solution) False
                     , imagePanel
                         (if isSolved model then
@@ -126,6 +136,9 @@ view model =
                         model.selected
                         (isSolved model)
                     ]
+
+                -- Win message, right below the squares (space reserved when unsolved)
+                , winOverlay (isSolved model)
 
                 -- Layer grid
                 , div [ class "grid grid-cols-4 gap-2" ]
@@ -149,13 +162,6 @@ view model =
                         ]
                         [ text "Next Level ▶" ]
                     ]
-
-                -- Next puzzle when solved
-                , if isSolved model then
-                    winOverlay
-
-                  else
-                    text ""
                 ]
             ]
         ]
@@ -235,10 +241,19 @@ layerThumb selected id =
         ]
 
 
-winOverlay : Html Msg
-winOverlay =
+winOverlay : Bool -> Html Msg
+winOverlay solved =
     div [ class "flex justify-center" ]
-        [ p [ class "text-6xl font-bold text-yellow-400 drop-shadow-lg" ] [ text "🎉 Solved!" ] ]
+        [ p [ class "text-lg font-bold text-green-400" ]
+            [ text
+                (if solved then
+                    "🎉 Solved!"
+
+                 else
+                    "\u{00A0}"
+                )
+            ]
+        ]
 
 
 
