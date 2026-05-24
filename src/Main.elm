@@ -36,7 +36,7 @@ loadPuzzle idx =
         solution =
             puzzles
                 |> List.Extra.getAt idx
-                |> Maybe.withDefault ( -1, [] )
+                |> Maybe.withDefault ( -1, [], \_ -> False )
     in
     { puzzleIdx = idx
     , solution = solution
@@ -94,18 +94,21 @@ update msg model =
 isSolved : Model -> Bool
 isSolved model =
     let
-        ( _, solution ) =
+        ( _, _, solution ) =
             model.solution
     in
-    model.selected == solution
+    solution model.selected
 
 
 view : Model -> Browser.Document Msg
 view model =
     let
+        ( layer, solutionRender, _ ) =
+            model.solution
+
         currentLayers =
             allLayers
-                |> List.Extra.getAt (Tuple.first model.solution)
+                |> List.Extra.getAt layer
                 |> Maybe.withDefault []
     in
     { title = it.title
@@ -126,7 +129,7 @@ view model =
                     [ class
                         "grid grid-cols-2 gap-4 h-56 rounded-xl transition"
                     ]
-                    [ imagePanel it.target (Tuple.second model.solution) (isSolved model)
+                    [ imagePanel it.target solutionRender (isSolved model)
                     , imagePanel
                         (if isSolved model then
                             it.compositeSolved
@@ -237,7 +240,7 @@ layerThumb selected id =
         [ class ("relative rounded-lg border-2 cursor-pointer overflow-hidden aspect-square " ++ borderColor ++ " " ++ bg)
         , onClick (ToggleLayer id)
         ]
-        [ img [ src (layerPath id), class "w-full h-full object-contain" ] []
+        [ img [ src (layerPath id), class "w-full h-full object-contain", title id ] []
         , case order of
             Just n ->
                 span
