@@ -6,6 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import List.Extra
 import Puzzles exposing (..)
+import Strings exposing (it)
 
 
 layerPath : String -> String
@@ -107,11 +108,11 @@ view model =
                 |> List.Extra.getAt (Tuple.first model.solution)
                 |> Maybe.withDefault []
     in
-    { title = "Che sagoma la geometria!"
+    { title = it.title
     , body =
         [ div [ class "min-h-screen bg-gray-950 text-white flex flex-col items-center p-4 font-sans" ]
             [ h1 [ class "text-2xl font-bold mb-4 tracking-wide text-yellow-400" ]
-                [ text "Che sagoma la geometria!" ]
+                [ text it.title ]
             , div [ class "w-full max-w-2xl flex flex-col gap-4" ]
                 [ -- Target + Composite panels
                   div
@@ -125,13 +126,13 @@ view model =
                                )
                         )
                     ]
-                    [ imagePanel "Target" (Tuple.second model.solution) False
+                    [ imagePanel it.target (Tuple.second model.solution) False
                     , imagePanel
                         (if isSolved model then
-                            "Composite ✓"
+                            it.compositeSolved
 
                          else
-                            "Composite"
+                            it.composite
                         )
                         model.selected
                         (isSolved model)
@@ -150,17 +151,17 @@ view model =
                         [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
                         , onClick PrevLevel
                         ]
-                        [ text "◀ Prev Level" ]
+                        [ text it.prevLevel ]
                     , button
                         [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
                         , onClick Reset
                         ]
-                        [ text "⟳ Reset" ]
+                        [ text it.reset ]
                     , button
                         [ class "py-2 rounded-lg bg-gray-700 hover:bg-gray-600 active:bg-gray-500 transition font-semibold text-lg"
                         , onClick NextLevel
                         ]
-                        [ text "Next Level ▶" ]
+                        [ text it.nextLevel ]
                     ]
                 ]
             ]
@@ -247,7 +248,7 @@ winOverlay solved =
         [ p [ class "text-lg font-bold text-green-400" ]
             [ text
                 (if solved then
-                    "🎉 Solved!"
+                    it.solved
 
                  else
                     "\u{00A0}"
